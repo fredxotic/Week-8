@@ -115,8 +115,8 @@ else riskLevel = 'LOW';
 
 ## 📞 Group Members
 
-- Mary Wairimu
 - Fred Kaloki
+- Mary Wairimu
 - Kelvin Karani
 - Odii Chinenye Gift
 - Rivaldo Ouma
