@@ -12,7 +12,7 @@ AI-Agents-Assignment/
 ├── README.md                          # This file - Complete project documentation
 ├── section_1.pdf                      # PDF containing Section 1: Short Answer Questions
 ├── section_2.pdf                      # PDF containing Section 2: Case Study Analysis
-├── AI_Agent.json                      # Exported n8n workflow for predictive maintenance agent
+├── AI_Workflow.json                   # Exported n8n workflow for predictive maintenance agent
 └── screenshots/                       # Folder containing workflow screenshots
     ├── workflow-design.png
     ├── execution-success.png
@@ -46,7 +46,7 @@ Comprehensive analysis including:
 
 ## 🛠️ Practical Implementation: n8n Workflow
 
-### Workflow File: `AI_Agent.json`
+### Workflow File: `AI_Workflow.json`
 This file contains the exported workflow for the **Predictive Maintenance Agent** simulation built in n8n.cloud.
 
 ### Workflow Overview
