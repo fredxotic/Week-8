@@ -2,7 +2,7 @@
 
 ## 📋 Repository Overview
 
-This repository contains my complete submission for the AI Agents assignment, demonstrating comprehensive understanding of AI Agent frameworks, applications, and practical implementation. The assignment covers both theoretical analysis and hands-on implementation of AI Agent technology.
+This repository contains our complete submission for the AI Agents assignment, demonstrating comprehensive understanding of AI Agent frameworks, applications, and practical implementation. The assignment covers both theoretical analysis and hands-on implementation of AI Agent technology.
 
 ## 📁 Repository Structure
 
@@ -113,10 +113,12 @@ else if (riskScore >= 2) riskLevel = 'MEDIUM';
 else riskLevel = 'LOW';
 ```
 
-## 📞 Contact
+## 📞 Group Members
 
-**Student:** Fred Kaloki  
-**Course:** AI For Sofware Engineering  
-**Email:** charlesfred285@gmail.com
+- Mary Wairimu
+- Fred Kaloki
+- Kelvin Karani
+- Odii Chinenye Gift
+- Rivaldo Ouma
 
 ---
