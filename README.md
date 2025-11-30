@@ -113,7 +113,7 @@ else if (riskScore >= 2) riskLevel = 'MEDIUM';
 else riskLevel = 'LOW';
 ```
 
-## 📞 Group Members
+## 👥 Group Members
 
 - Fred Kaloki
 - Mary Wairimu
