@@ -1,0 +1,228 @@
+{
+  "name": "AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "id": "d10bccf0-a9df-4a47-8e4f-986845b27b83",
+      "name": "Every 10 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -912,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate mock sensor data\nconst machineId = 'CNC-Machine-01';\nconst vibration = (Math.random() * 10).toFixed(2); // 0-10 scale\nconst temperature = (Math.random() * 50 + 60).toFixed(2); // 60-110°C\n\nreturn {\n  json: {\n    machineId: machineId,\n    vibration: parseFloat(vibration),\n    temperature: parseFloat(temperature),\n    timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "id": "7734bd43-9d6c-4b12-ba4e-3bb765393598",
+      "name": "Generate Sensor Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze risk based on sensor readings\nconst { vibration, temperature } = $input.first().json;\n\nlet riskLevel = 'LOW';\nlet riskScore = 0;\n\nif (vibration > 7.0) riskScore += 2;\nif (vibration > 8.5) riskScore += 3;\nif (temperature > 85) riskScore += 2;\nif (temperature > 95) riskScore += 3;\n\nif (riskScore >= 5) {\n  riskLevel = 'HIGH';\n} else if (riskScore >= 2) {\n  riskLevel = 'MEDIUM';\n}\n\nreturn {\n  json: {\n    ...$input.first().json,\n    riskLevel: riskLevel,\n    riskScore: riskScore\n  }\n};"
+      },
+      "id": "d18a6368-6c64-41af-96a8-74d1a1fd3ce2",
+      "name": "Analyze Risk Level",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log sensor data with LOW risk status\nfor (const item of $input.all()) {\n  console.log('LOW RISK - Sensor Data:', item.json);\n}\n\nreturn $input.all();"
+      },
+      "id": "5a61b3f2-6072-4b50-a2bf-37ee6f5c6e0a",
+      "name": "Log Low Risk",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "fredkaloki2007@gmail.com",
+        "subject": "=HIGH RISK ALERT: Machine Maintenance Required - {{ $json.machineId }}",
+        "message": "=ALERT: High risk detected on {{ $json.machineId }}\n\nVibration: {{ $json.vibration }}\nTemperature: {{ $json.temperature }}\nRisk Level: {{ $json.riskLevel }}\n\nImmediate maintenance required.",
+        "options": {}
+      },
+      "id": "2fa12eac-52f1-4afb-918e-9736325c4107",
+      "name": "Send Alert Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        176
+      ],
+      "webhookId": "2253184b-ddbf-4ce0-a024-6fc6a7c76171",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "V0FriffJUdOBcAk3",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1H9taKMEQtsd6PBWbJuQ0q6X7u_QxH6kZ0j2U7ru4sno/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "28bd72e1-3b19-4185-8af0-74c575d74451",
+      "name": "Create Work Order",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        368
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cNJw20d50IA0Wrsr",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "id-1",
+              "leftValue": "={{ $json.riskLevel }} = \"HIGH\"",
+              "rightValue": "HIGH",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e97f8538-5fab-492f-95aa-494c5c70bc32",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -240,
+        176
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Every 10 Minutes": {
+      "main": [
+        [
+          {
+            "node": "Generate Sensor Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Sensor Data": {
+      "main": [
+        [
+          {
+            "node": "Analyze Risk Level",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Risk Level": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Send Alert Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create Work Order",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Low Risk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0b23e103-1513-4004-a5af-9cdb4093441c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b9155b30fcc19b4c160f28efc62ed352112a01b2d6d8493ddeba4fb40fe3d23b"
+  },
+  "id": "yMwmWY1S0z07y4Zq",
+  "tags": []
+}
