@@ -1,4 +1,4 @@
-# Week 7 Assignment - AI For Software Engineering
+# Week 8 Assignment - AI For Software Engineering
 
 ## 📋 Repository Overview
 
